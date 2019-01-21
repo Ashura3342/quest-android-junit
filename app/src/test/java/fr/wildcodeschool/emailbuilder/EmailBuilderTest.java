@@ -1,6 +1,9 @@
 package fr.wildcodeschool.emailbuilder;
 
 import org.junit.Test;
+
+import java.util.Collections;
+
 import static org.junit.Assert.*;
 
 public class EmailBuilderTest {
@@ -89,46 +92,151 @@ public class EmailBuilderTest {
 
   @Test
   public void emailBuilder_isValidEmailSimple_ReturnsTrue() {
-    // Code here
+    assertTrue(EmailBuilder.isValidEmail("nathan@gmail.com"));
   }
 
   @Test
   public void emailBuilder_isValidEmailWithSubDomain_ReturnsTrue() {
-    // Code here
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("name")
+            .setDomain("email")
+            .setTld("com")
+            .build();
+    assertTrue(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
   }
 
   @Test
   public void emailBuilder_isValidEmailNoUsername_ReturnsFalse() {
-    // Code here
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setDomain("email")
+            .setSubDomain("co")
+            .setTld("uk")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
   }
 
   @Test
   public void emailBuilder_isValidEmailNoDomain_ReturnsFalse() {
-    // Code here
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("name")
+            .setTld("uk")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
   }
 
   @Test
   public void emailBuilder_isValidEmailNoTld_ReturnsFalse() {
-    // Code here
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("name")
+            .setDomain("email")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
   }
 
   @Test
   public void emailBuilder_isValidEmailEmptyString_ReturnsFalse() {
-    // Code here
+    EmailBuilder emailBuilder = new EmailBuilder.Builder().build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
   }
 
   @Test
   public void emailBuilder_isValidNullEmail_ReturnsFalse() {
-    // Code here
+    assertFalse(EmailBuilder.isValidEmail(null));
   }
 
-  // Add test here
-  // * Check name validity (*$£%ù^¨&é"'()°-è_çà§æ«€¶ŧ←↓→øþ¨¤@ßðđŋħłµł»¢“)
-  // * Check name length
-  // * Check domain validity
-  // * Check domain length
-  // * Check sub domain validity
-  // * Check sub domain length
-  // * Check tld validity
-  // * Check tld length
+  @Test
+  public void emailBuilder_isValidWrongName_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("*$£%ù^¨&é\"'()°-è_çà§æ«€¶ŧ←↓→øþ¨¤@ßðđŋħłµł»¢“")
+            .setDomain("email")
+            .setTld("com")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
+
+  @Test
+  public void emailBuilder_isValidNameOutOfBound_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName(String.join("", Collections.nCopies(256, "a")))
+            .setDomain("email")
+            .setTld("com")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
+
+  @Test
+  public void emailBuilder_isValidWrongDomain_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setDomain("*$£%ù^¨&é\"'()°-è_çà§æ«€¶ŧ←↓→øþ¨¤@ßðđŋħłµł»¢“")
+            .setUserName("user")
+            .setTld("com")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
+
+  @Test
+  public void emailBuilder_isValidDomainOutOfBound_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("user")
+            .setDomain(String.join("", Collections.nCopies(65, "a")))
+            .setTld("com")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
+
+  @Test
+  public void emailBuilder_isValidWrongSubDomain_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setDomain("email")
+            .setUserName("user")
+            .setSubDomain("\"*$£%ù^¨&é\\\"'()°-è_çà§æ«€¶")
+            .setTld("com")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
+
+  @Test
+  public void emailBuilder_isValidSubDomainOutOfBound_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("user")
+            .setDomain("email")
+            .setSubDomain(String.join("", Collections.nCopies(65, "a")))
+            .setTld("com")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
+
+  @Test
+  public void emailBuilder_isValidWrongTld_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("user")
+            .setDomain("email")
+            .setSubDomain(String.join("", Collections.nCopies(25, "a")))
+            .setTld("\"*$£%ù^¨&é\\\"'()°-è_çà§æ«€¶")
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
+
+  @Test
+  public void emailBuilder_isValidTldOutOfBound_ReturnsFalse() {
+    EmailBuilder emailBuilder = new EmailBuilder
+            .Builder()
+            .setUserName("user")
+            .setDomain("email")
+            .setSubDomain("uk")
+            .setTld(String.join("", Collections.nCopies(65, "a")))
+            .build();
+    assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
+  }
 }

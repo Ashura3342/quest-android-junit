@@ -13,23 +13,30 @@ public class EmailBuilder {
    * Email validation pattern.
    */
   private static final Pattern EMAIL_PATTERN = Pattern.compile(
-    "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{0,256}" +
+    "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,255}" +
       "\\@" +
-      "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+      "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,63}" +
       "(" +
       "\\." +
-      "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+      "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,23}" +
       ")+"
   );
 
   private EmailBuilder() {}
+
+  private boolean checkString(String value) {
+    return value != null && !value.isEmpty();
+  }
 
   /**
    * Formats and returns the build email
    * @return The build email address
    */
   public String getEmail() {
-    return mUserName + '@' + mDomain + '.' + mSubDomain + '.' + mTld;
+    return (checkString(mUserName) ? mUserName : "")
+            + (checkString(mDomain) ? "@" + mDomain : "")
+            + (checkString(mSubDomain) ? (checkString(mDomain) ? "." : "@") + mSubDomain : "")
+            + (checkString(mTld) ? "." + mTld : "");
   }
 
   /**
