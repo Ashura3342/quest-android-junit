@@ -13,12 +13,12 @@ public class EmailBuilder {
    * Email validation pattern.
    */
   private static final Pattern EMAIL_PATTERN = Pattern.compile(
-    "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,255}" +
-      "\\@" +
-      "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,63}" +
+    "[a-zA-Z0-9+._%\\-]{1,256}" +
+      "@" +
+      "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,64}" +
       "(" +
       "\\." +
-      "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,23}" +
+      "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,25}" +
       ")+"
   );
 

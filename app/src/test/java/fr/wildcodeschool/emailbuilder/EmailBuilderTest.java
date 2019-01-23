@@ -100,7 +100,7 @@ public class EmailBuilderTest {
     EmailBuilder emailBuilder = new EmailBuilder
             .Builder()
             .setUserName("name")
-            .setDomain("email")
+            .setSubDomain("email")
             .setTld("com")
             .build();
     assertTrue(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
@@ -163,7 +163,7 @@ public class EmailBuilderTest {
   public void emailBuilder_isValidNameOutOfBound_ReturnsFalse() {
     EmailBuilder emailBuilder = new EmailBuilder
             .Builder()
-            .setUserName(String.join("", Collections.nCopies(256, "a")))
+            .setUserName(String.join("", Collections.nCopies(257, "a")))
             .setDomain("email")
             .setTld("com")
             .build();
@@ -186,7 +186,7 @@ public class EmailBuilderTest {
     EmailBuilder emailBuilder = new EmailBuilder
             .Builder()
             .setUserName("user")
-            .setDomain(String.join("", Collections.nCopies(65, "a")))
+            .setDomain(String.join("", Collections.nCopies(66, "a")))
             .setTld("com")
             .build();
     assertFalse(EmailBuilder.isValidEmail(emailBuilder.getEmail()));
